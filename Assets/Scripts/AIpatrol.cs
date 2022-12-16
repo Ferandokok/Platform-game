@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AIpatrol : MonoBehaviour
 {
+    private Animator anim;
+
+    GameObject scoreCounter;
     public float walkSpeed;
 
     [HideInInspector]
@@ -20,6 +23,7 @@ public class AIpatrol : MonoBehaviour
     void Start()
     {
         mustPatrol = true;
+        scoreCounter = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -29,6 +33,9 @@ public class AIpatrol : MonoBehaviour
         {
             Patrol();
         }
+        float IsRunning = Input.GetAxis("Horizontal");
+        IsRunning = Mathf.Abs(IsRunning);
+        anim.SetFloat("Run", IsRunning);
     }
     private void FixedUpdate()
     {
@@ -52,6 +59,13 @@ public class AIpatrol : MonoBehaviour
         walkSpeed *= -1;
         mustPatrol = true;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Wall"))
+        {
+            flip();
+        }
+    }
     public void TakeDamage()
     {
         HP--;
@@ -62,6 +76,7 @@ public class AIpatrol : MonoBehaviour
     }
     void Die()
     {
-        Destroy(gameObject); 
+        Destroy(gameObject);
+        scoreCounter.GetComponent<Scores>().scoreAdd();
     }
 }

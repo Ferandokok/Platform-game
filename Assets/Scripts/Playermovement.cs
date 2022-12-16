@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.Audio;
 public class Playermovement : MonoBehaviour
 {
+    private Animator anim;
+
+    public AudioSource Shoot;
+
+    public Transform Player;
+    public Transform PlayerSpawn;
+
     public float speed;
     public float JumpForce;
 
@@ -19,6 +27,7 @@ public class Playermovement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _rigidbody = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -46,11 +55,22 @@ public class Playermovement : MonoBehaviour
             DoubleJump = false;
             Jump();
         }
-        if (Input.GetButtonDown("Fire1") && canShoot == true)
+        if (Input.GetKeyDown(KeyCode.X) && canShoot == true)
         {
+            Shoot.Play();
             GameObject spawnedBullet = Instantiate(Bullet, shootPos.position, Quaternion.identity);
             spawnedBullet.GetComponent<BulletBeh>().dirX = -facingDirX;
             StartCoroutine(Reload());
+        }
+        float IsRunning = Input.GetAxis("Horizontal");
+        IsRunning = Mathf.Abs(IsRunning);
+        anim.SetFloat("Run", IsRunning);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Player.position = PlayerSpawn.position;
         }
     }
     void Jump()

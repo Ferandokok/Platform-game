@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BulletBeh : MonoBehaviour
 {
+    
+
     public float speed = 8;
     public float LifeTime = 2;
     [HideInInspector] public float dirX = 1f;
 
     public GameObject Bullet;
     private float facingDirX = 1;
-    private bool canShoot = true;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,12 +23,12 @@ public class BulletBeh : MonoBehaviour
         if (dirX == -1 || dirX == 1)
         {
             facingDirX = dirX;
-            Debug.Log(facingDirX);
         }
         transform.localScale = characterScale * facingDirX;
     }
 
     // Update is called once per frame
+    
     void Update()
     {
         //transform.Translate(transform.right * dirX * speed * Time.deltaTime);
@@ -38,12 +41,13 @@ public class BulletBeh : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Destroy(gameObject);
-        Debug.Log("Hit");
         if (collision.gameObject.CompareTag("Enemy"))
         {
             AIpatrol enemyScript = collision.gameObject.GetComponent<AIpatrol>();
 
             enemyScript.TakeDamage();
+            
         }
+
     }
 }

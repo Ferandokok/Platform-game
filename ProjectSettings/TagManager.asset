@@ -7,6 +7,9 @@ TagManager:
   - Wall
   - Enemy
   - Arrow
+  - SpikeBall
+  - SpikeWall
+  - SpikeWallReverse
   layers:
   - Default
   - TransparentFX
@@ -18,11 +21,11 @@ TagManager:
   - Wall
   - Bullet
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - spikeWall
+  - SpikeBall
+  - BallStopper
+  - SpikeWallReverse
   - 
   - 
   - 
